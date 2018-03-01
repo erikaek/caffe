@@ -100,7 +100,8 @@ void SoftmaxWithLossLayer<Dtype>::Forward_cpu(
   const Dtype* prob_data = prob_.cpu_data();
   const Dtype* label = bottom[1]->cpu_data();
   int dim = prob_.count() / outer_num_;
-  cout << "num bottom elements: " + bottom.size();
+  LOG(INFO) << this->type()
+<< "num bottom elements: ";
   if(bottom.size() == 2 ) {
     // original version with equally weighted pixels
     int count = 0;
