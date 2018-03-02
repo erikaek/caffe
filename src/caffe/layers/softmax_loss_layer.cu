@@ -201,7 +201,6 @@ void SoftmaxWithLossLayer<Dtype>::Backward_gpu(const vector<Blob<Dtype>*>& top,
     }
     Dtype loss_weight = 0;
     LOG(INFO) << this->type()
-              << "Backward_gpu";
     if( valid_count == 0) {
         LOG(INFO) << this->type()
                   << " warning: sum of pixel wise loss weights is zero!";
