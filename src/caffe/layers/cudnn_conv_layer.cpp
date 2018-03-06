@@ -104,7 +104,7 @@ void CuDNNConvolutionLayer<Dtype>::Reshape(
 
   // Specify workspace limit for kernels directly until we have a
   // planning strategy and a rewrite of Caffe's GPU memory mangagement
-  size_t workspace_limit_bytes = 8*1024*1024;
+  size_t workspace_limit_bytes = 2*8*1024*1024;
 
   for (int i = 0; i < bottom.size(); i++) {
     vector<int> bottom_shape(bottom[i]->shape());
