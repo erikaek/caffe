@@ -25,13 +25,13 @@ void HDF5DataLayer<Dtype>::Forward_gpu(const vector<Blob<Dtype>*>& bottom,
     }
 
     // copy data to top blobs
+    LOG(INFO) << this->type()      
+                << " TOP SIZE: " << this->layer_param_.top_size();
     for (int j = 0; j < this->layer_param_.top_size(); ++j) {
       int data_dim = top[j]->count() / top[j]->shape(0);
       caffe_copy(data_dim,
           &hdf_blobs_[j]->cpu_data()[data_permutation_[current_row_]
             * data_dim], &top[j]->mutable_gpu_data()[i * data_dim]);
-      LOG(INFO) << this->type()      
-                << " INDEX IN DATA FILE: " << j;
     }
 
     // advance index to next "row", possibly go to next file
