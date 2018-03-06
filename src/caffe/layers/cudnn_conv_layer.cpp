@@ -136,9 +136,6 @@ void CuDNNConvolutionLayer<Dtype>::Reshape(
     cudnn::setNdConvolutionDesc<Dtype>(&conv_descs_[i], bottom_descs_[i],
                                       filter_desc_, pad_shape, stride_shape);
 
-    LOG(INFO) << this->type()
-              << CUDNN_CONVOLUTION_FWD_SPECIFY_WORKSPACE_LIMIT;
-
     // choose forward and backward algorithms + workspace(s)
     CUDNN_CHECK(cudnnGetConvolutionForwardAlgorithm(handle_[0],
       bottom_descs_[i],
