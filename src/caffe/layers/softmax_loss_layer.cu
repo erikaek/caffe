@@ -89,14 +89,12 @@ void SoftmaxWithLossLayer<Dtype>::Forward_gpu(
   if ( (normalization_ == LossParameter_NormalizationMode_VALID &&
         has_ignore_label_) || bottom.size() == 3) {
     caffe_gpu_asum(nthreads, counts, &valid_count);
-    LOG(INFO) << this->type()
-              << " VALID_COUNT: " << valid_count;
     if( valid_count == 0 ) {
       LOG(INFO) << this->type()
                 << " warning: sum of pixel wise loss weights is zero!";
     } else {
       LOG(INFO) << this->type()
-                << " WEIGHTS NOT ZERO ";
+                << "LOSS WEIGHTS NOT ZERO ";
     }
   }
   if ( valid_count == 0) {
