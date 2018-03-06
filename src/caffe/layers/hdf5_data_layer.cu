@@ -50,6 +50,8 @@ void HDF5DataLayer<Dtype>::Forward_gpu(const vector<Blob<Dtype>*>& bottom,
       }
       current_row_ = 0;
       if (this->layer_param_.hdf5_data_param().shuffle())
+        LOG(INFO) << this->type()      
+                << " DATA SHOULD SHUFFLE ";
         std::random_shuffle(data_permutation_.begin(), data_permutation_.end());
     }
   }
