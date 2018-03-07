@@ -34,7 +34,7 @@ void HDF5DataLayer<Dtype>::Forward_gpu(const vector<Blob<Dtype>*>& bottom,
 
     // advance index to next "row", possibly go to next file
     // LOG(INFO) << this->type()      
-    //          << " CURRENT ROW: " << data_permutation_[current_row_];
+    //           << " CURRENT ROW: " << data_permutation_[current_row_];
     ++current_row_;
     if (current_row_ == hdf_blobs_[0]->shape(0)) {
       if (num_files_ > 1) {
@@ -50,8 +50,6 @@ void HDF5DataLayer<Dtype>::Forward_gpu(const vector<Blob<Dtype>*>& bottom,
       }
       current_row_ = 0;
       if (this->layer_param_.hdf5_data_param().shuffle())
-        LOG(INFO) << this->type()      
-                << " DATA SHOULD SHUFFLE ";
         std::random_shuffle(data_permutation_.begin(), data_permutation_.end());
     }
   }
