@@ -60,6 +60,8 @@ void SoftmaxWithLossLayer<Dtype>::Forward_gpu(
   const Dtype* label = bottom[1]->gpu_data();
   const int dim = prob_.count() / outer_num_;
   const int nthreads = outer_num_ * inner_num_;
+  LOG(INFO) << this->type()
+              << " dimension: " << dim;
   // Since this memory is not used for anything until it is overwritten
   // on the backward pass, we use it here to avoid having to allocate new GPU
   // memory to accumulate intermediate results in the kernel.
@@ -88,8 +90,6 @@ void SoftmaxWithLossLayer<Dtype>::Forward_gpu(
   if ( (normalization_ == LossParameter_NormalizationMode_VALID &&
         has_ignore_label_) || bottom.size() == 3) {
     caffe_gpu_asum(nthreads, counts, &valid_count);
-    LOG(INFO) << this->type()
-              << " values: " << nthreads;
     if( valid_count == 0 ) {
       LOG(INFO) << this->type()
                 << " warning: sum of pixel wise loss weights is zero!";          
