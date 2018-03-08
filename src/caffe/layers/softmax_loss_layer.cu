@@ -85,11 +85,11 @@ void SoftmaxWithLossLayer<Dtype>::Forward_gpu(
   Dtype valid_count = -1;
   // Only launch another CUDA kernel if we actually need the count of valid
   // outputs.
-  LOG(INFO) << this->type()
-            << " amount of values: " << sizeof(prob_data)/sizeof(prob_data[0]);
   if ( (normalization_ == LossParameter_NormalizationMode_VALID &&
         has_ignore_label_) || bottom.size() == 3) {
     caffe_gpu_asum(nthreads, counts, &valid_count);
+    LOG(INFO) << this->type()
+              << " values: " << nthreads;
     if( valid_count == 0 ) {
       LOG(INFO) << this->type()
                 << " warning: sum of pixel wise loss weights is zero!";          
