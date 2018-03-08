@@ -64,9 +64,6 @@ void SoftmaxWithLossLayer<Dtype>::Forward_gpu(
   // on the backward pass, we use it here to avoid having to allocate new GPU
   // memory to accumulate intermediate results in the kernel.
   Dtype* loss_data = bottom[0]->mutable_gpu_diff();
-
-  LOG(INFO) << this->type()
-            << " amount of values: " << sizeof(loss_data)/sizeof(loss_data[0]);
   // Similarly, this memory is never used elsewhere, and thus we can use it
   // to avoid having to allocate additional GPU memory.
   Dtype* counts = prob_.mutable_gpu_diff();
@@ -88,13 +85,14 @@ void SoftmaxWithLossLayer<Dtype>::Forward_gpu(
   Dtype valid_count = -1;
   // Only launch another CUDA kernel if we actually need the count of valid
   // outputs.
-
+  LOG(INFO) << this->type()
+            << " values: " << prob_data;
   if ( (normalization_ == LossParameter_NormalizationMode_VALID &&
         has_ignore_label_) || bottom.size() == 3) {
     caffe_gpu_asum(nthreads, counts, &valid_count);
     if( valid_count == 0 ) {
       LOG(INFO) << this->type()
-                << " warning: sum of pixel wise loss weights is zero!";
+                << " warning: sum of pixel wise loss weights is zero!";          
     } else {
       LOG(INFO) << this->type()
                 << " LOSS WEIGHTS NOT ZERO!";         
