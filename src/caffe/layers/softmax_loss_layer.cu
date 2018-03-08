@@ -86,7 +86,7 @@ void SoftmaxWithLossLayer<Dtype>::Forward_gpu(
   // Only launch another CUDA kernel if we actually need the count of valid
   // outputs.
   LOG(INFO) << this->type()
-            << " values: " << prob_data;
+            << " amount of values: " << sizeof(prob_data)/sizeof(prob_data[0]);
   if ( (normalization_ == LossParameter_NormalizationMode_VALID &&
         has_ignore_label_) || bottom.size() == 3) {
     caffe_gpu_asum(nthreads, counts, &valid_count);
