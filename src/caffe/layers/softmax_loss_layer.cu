@@ -95,6 +95,12 @@ void SoftmaxWithLossLayer<Dtype>::Forward_gpu(
 
       LOG(INFO) << this->type()
                 << " values: " << loss_data;
+    } else {
+      LOG(INFO) << this->type()
+                << " LOSS WEIGHTS NOT ZERO!"; 
+                
+      LOG(INFO) << this->type()
+                << " values: " << loss_data;          
     }
   }
   if ( valid_count == 0) {
