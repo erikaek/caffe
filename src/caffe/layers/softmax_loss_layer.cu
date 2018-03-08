@@ -92,9 +92,6 @@ void SoftmaxWithLossLayer<Dtype>::Forward_gpu(
     if( valid_count == 0 ) {
       LOG(INFO) << this->type()
                 << " warning: sum of pixel wise loss weights is zero!";
-    } else {
-      LOG(INFO) << this->type()
-                << "LOSS WEIGHTS NOT ZERO ";
     }
   }
   if ( valid_count == 0) {
