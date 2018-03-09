@@ -435,6 +435,10 @@ void CreateDeformationLayer<Dtype>::Forward_cpu(
       }
     }
 
+    size_t pdf_size = bottom[0]->count() / bottom[0]->shape(0);
+    LOG(INFO) << this->type()
+              << " warning: sum of pixel wise loss weights is zero!"; 
+
     // if a offset sampling from input shape is requested, do it
     if( param.random_offset_range_from_in_blob_shape()) {
       int z = caffe_rng_rand() % bottom_nz;
