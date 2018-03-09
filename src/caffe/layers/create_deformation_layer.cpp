@@ -434,10 +434,10 @@ void CreateDeformationLayer<Dtype>::Forward_cpu(
         mirrorfactor[i] = 1;
       }
     }
-
-    //size_t pdf_size = bottom[0]->count() / bottom[0]->shape(0);
-    //LOG(INFO) << this->type()
-    //         << "pdf_size: "<<pdf_size; 
+    // / bottom[0]->shape(0);
+    size_t pdf_size = bottom[0]->count();
+    LOG(INFO) << this->type()
+             << "pdf_size: "<<pdf_size; 
 
     // if a offset sampling from input shape is requested, do it
     if( param.random_offset_range_from_in_blob_shape()) {
