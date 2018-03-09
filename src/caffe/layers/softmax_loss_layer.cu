@@ -66,12 +66,12 @@ void SoftmaxWithLossLayer<Dtype>::Forward_gpu(
   Dtype* loss_data = bottom[0]->mutable_gpu_diff();
   // Similarly, this memory is never used elsewhere, and thus we can use it
   // to avoid having to allocate additional GPU memory.
-  int batch_size = blob->num();
-  int channels = blob->channels();
-  int height = blob->height();
-  int width = blob->width();
+  int batch_size = loss_data->num();
+  int channels = loss_data->channels();
+  int height = loss_data->height();
+  int width = loss_data->width();
   LOG(INFO) << this->type()
-            << " BLOB SHAPE: (batch_size, channels, height, width) = (" << batch_size << ", " << channels << ", " << height << ", " << width << ")" ; 
+            << " BLOB SHAPE: (batch_size, channels, height, width) = (" << batch_size << ", " << channels << ", " << height << ", " << width << ")"; 
 
 
   Dtype* counts = prob_.mutable_gpu_diff();
