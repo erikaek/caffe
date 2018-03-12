@@ -168,9 +168,12 @@ void SoftmaxWithLossLayer<Dtype>::Backward_gpu(const vector<Blob<Dtype>*>& top,
   }
   if (propagate_down[0]) {
     Dtype* bottom_diff = bottom[0]->mutable_gpu_diff();
+    const Dtype* top_data;
     const Dtype* prob_data = prob_.gpu_data();
     if (top[0]->gpu_data()) {
-      const Dtype* top_data = top[0]->gpu_data();
+       top_data = top[0]->gpu_data();
+    } else {
+       top_data = 0;
     }
     caffe_gpu_memcpy(prob_.count() * sizeof(Dtype), prob_data, bottom_diff);
     const Dtype* label = bottom[1]->gpu_data();
@@ -180,7 +183,7 @@ void SoftmaxWithLossLayer<Dtype>::Backward_gpu(const vector<Blob<Dtype>*>& top,
     // we use to to avoid allocating new GPU memory.
     Dtype* counts = prob_.mutable_gpu_diff();
 
-   if (top[0]->gpu_data()) {
+   if (top_data) {
     if( bottom.size() == 2) {
         // original version with equally weighted pixels
         // NOLINT_NEXT_LINE(whitespace/operators)
