@@ -95,7 +95,7 @@ void SoftmaxWithLossLayer<Dtype>::Forward_gpu(
     } 
   }
   if ( valid_count == 0) {
-      top[0]->mutable_cpu_data()[0] = 0.;
+      //top[0]->mutable_cpu_data()[0] = 0.;
   } else {
       top[0]->mutable_cpu_data()[0] = loss / get_normalizer(normalization_,
                                                           valid_count);
@@ -170,11 +170,11 @@ void SoftmaxWithLossLayer<Dtype>::Backward_gpu(const vector<Blob<Dtype>*>& top,
     Dtype* bottom_diff = bottom[0]->mutable_gpu_diff();
     const Dtype* top_data;
     const Dtype* prob_data = prob_.gpu_data();
-    //if (top[0]->gpu_data()) {
-    top_data = top[0]->gpu_data();
-    //} else {
-    //   top_data = 0;
-    //}
+    if (top[0]->gpu_data()) {
+       top_data = top[0]->gpu_data();
+    } else {
+       top_data = 0;
+    }
     caffe_gpu_memcpy(prob_.count() * sizeof(Dtype), prob_data, bottom_diff);
     const Dtype* label = bottom[1]->gpu_data();
     const int dim = prob_.count() / outer_num_;
@@ -183,22 +183,22 @@ void SoftmaxWithLossLayer<Dtype>::Backward_gpu(const vector<Blob<Dtype>*>& top,
     // we use to to avoid allocating new GPU memory.
     Dtype* counts = prob_.mutable_gpu_diff();
 
-    //if (top_data) {
+   if (top_data) {
     if( bottom.size() == 2) {
-      // original version with equally weighted pixels
-      // NOLINT_NEXT_LINE(whitespace/operators)
-      SoftmaxLossBackwardGPU<Dtype><<<CAFFE_GET_BLOCKS(nthreads),
+        // original version with equally weighted pixels
+        // NOLINT_NEXT_LINE(whitespace/operators)
+        SoftmaxLossBackwardGPU<Dtype><<<CAFFE_GET_BLOCKS(nthreads),
           CAFFE_CUDA_NUM_THREADS>>>(nthreads, top_data, label, bottom_diff,
           outer_num_, dim, inner_num_, has_ignore_label_, ignore_label_,
           counts);
-    } else {
-      WeightedSoftmaxLossBackwardGPU<Dtype><<<CAFFE_GET_BLOCKS(nthreads),
+      } else {
+        WeightedSoftmaxLossBackwardGPU<Dtype><<<CAFFE_GET_BLOCKS(nthreads),
           CAFFE_CUDA_NUM_THREADS>>>(nthreads, top_data, label,
           bottom[2]->gpu_data(), bottom_diff,
           outer_num_, dim, inner_num_, has_ignore_label_, ignore_label_,
           counts);
+      }
     }
-   //}
     Dtype valid_count = -1;
     // Only launch another CUDA kernel if we actually need the count of valid
     // outputs.
