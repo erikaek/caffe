@@ -7,7 +7,7 @@
 #include "caffe/common.hpp"
 #include "caffe/proto/caffe.pb.h"
 #include "caffe/util/io.hpp"
-#include "matio.h"
+#include "matio-1.5.12/src/matio.h"
 
 namespace caffe {
 
